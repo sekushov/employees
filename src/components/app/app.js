@@ -83,12 +83,20 @@ class App extends Component {
     onChangeSearch = (term) => {
         this.setState({term})
     }
-    searchEmployees = (items, term) => {
+    searchEmployees = (employees, term) => {
         if (term === '') {
-            return items
+            return employees
         }
-        return items.filter(item => {
-            return item.name.indexOf(term) > -1
+        const termValid = term.toLowerCase().trim();
+        return employees.filter(employee => {
+            const employeeValueValid = employee.name.toLowerCase().trim();
+            // если в строке найдено выражение
+            if (employeeValueValid.indexOf(termValid) > -1) {
+                //проверяем предыдущий символ в строке перед найденным выражением. Чтобы поиск был с начала слов, а не с середины
+                if (employeeValueValid[employeeValueValid.indexOf(termValid) - 1] === undefined || employeeValueValid[employeeValueValid.indexOf(termValid) - 1] === ' ') {
+                    return true
+                }
+            }
         });
     }
 
